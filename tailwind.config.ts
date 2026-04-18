@@ -8,7 +8,58 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+	screens: {
+		'xs': '300px',
+		'sm': '768px',
+		'md': '991px',
+		'lg': '1200px',
+		'xl': '1500px'
+	},
   	extend: {
+		animation: {
+			equilizer: 'equilizer 2s linear infinite'
+		},
+		keyframes: {
+			equilizer: {
+				'0%': {
+					height: '20%',
+				},
+				'10%': {
+					height: '10%',
+				},
+				'20%': {
+					height: '30%',
+				},
+				'30%': {
+					height: '50%',
+				},
+				'40%': {
+					height: '20%',
+				},
+				'50%': {
+					height: '10%',
+				},
+				'60%': {
+					height: '80%',
+				},
+				'70%': {
+					height: '30%',
+				},
+				'80%': {
+					height: '60%',
+				},
+				'90%': {
+					height: '80%',
+				},
+				'100%': {
+					height: '100%',
+				}
+			}
+		},
+		fontFamily: {
+			sans: ['var(--font-geist-sans)'],
+			mono: ['var(--font-geist-mono)'],
+		},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
@@ -58,6 +109,10 @@ const config: Config = {
   		}
   	}
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: 
+  	[
+		require("tailwindcss-animate"),
+		require('tailwind-scrollbar'),
+	],
 };
 export default config;

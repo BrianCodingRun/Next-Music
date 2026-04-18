@@ -1,34 +1,45 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
+'use client';
+
+import { GeistSans } from 'geist/font/sans';
+import { GeistMono } from 'geist/font/mono';
+import { SessionProvider } from "next-auth/react";
+import Header from "@/components/Header";
 import "./globals.css";
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
-
-export const metadata: Metadata = {
-  title: "Next Music",
-  description: "Next Music is a music player built with Next.js",
-};
+import Head from './head';
+import { useEffect, useState } from 'react';
+import Banniere from '@/components/Banniere';
 
 export default function RootLayout({
   children,
-}: Readonly<{
+  session,
+}: {
   children: React.ReactNode;
-}>) {
+  session?: any;
+}) {
+  const [token, setToken] = useState('');
+
+  // Fetch the session token and set it for the SDK
+  useEffect(() => {
+    const getToken = async () => {
+      const response = await fetch(`/api/auth/session`);
+      const data = await response.json();
+      if (data?.accessToken) {
+        setToken(data.accessToken);
+      }
+    };
+    getToken();
+  }, []);
+
   return (
     <html lang="fr">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <Head />
+      <body className={`${GeistSans.variable} ${GeistMono.variable} font-sans overflow-hidden`}>
+        <Banniere />
+        <SessionProvider session={session}>
+          <main className="h-screen">
+              {children}
+          </main>
+        </SessionProvider>
       </body>
     </html>
   );
